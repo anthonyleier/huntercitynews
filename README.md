@@ -1,4 +1,4 @@
-# tabnews-clone
+# huntercitynews
 
 O propósito deste repositório é através do curso.dev realizar o desenvolvimento e implementação de todo o sistema do Tabnews original do zero. Através do curso que está em produção pelo Filipe Deschamps, estou acompanhando as aulas para aprender como elaborar sistemas com o uso de NextJS e React. O curso busca ensinar na prática, a desenvolver e colocar em produção uma aplicação em grande escala, utilizando como base o [Tabnews](https://tabnews.com.br).
 
