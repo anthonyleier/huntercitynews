@@ -10,11 +10,9 @@ async function Status(request, response) {
   const maxConnections = parseInt(maxConnectionsResult.rows[0].max_connections);
 
   const openedConnectionsResult = await database.query(
-    "SELECT COUNT(*) AS opened_connections FROM pg_stat_activity;"
+    "SELECT COUNT(*)::INTEGER AS opened_connections FROM pg_stat_activity WHERE datname = 'local_db';"
   );
-  const openedConnections = parseInt(
-    openedConnectionsResult.rows[0].opened_connections
-  );
+  const openedConnections = openedConnectionsResult.rows[0].opened_connections;
 
   response.status(200).json({
     updated_at: updatedAt,
