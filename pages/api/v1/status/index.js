@@ -1,6 +1,6 @@
 import database from "infra/database.js";
 
-async function Status(request, response) {
+async function status(request, response) {
   const updatedAt = new Date().toISOString();
 
   const postgresVersionResult = await database.query("SHOW server_version;");
@@ -28,4 +28,4 @@ async function Status(request, response) {
   });
 }
 
-export default Status;
+export default status;
