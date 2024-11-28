@@ -44,6 +44,7 @@ function DatabaseInfo() {
 
   return (
     <>
+      <h2>Database</h2>
       <div>Versão do PostgreSQL: {version}</div>
       <div>Conexões abertas: {openedConnections}</div>
       <div>Máximo de conexões: {maxConnections}</div>
