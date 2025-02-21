@@ -12,9 +12,7 @@ export default router.handler({
   onError: onErrorHandler,
 });
 
-const dbClient = await database.getNewClient();
 const defaultMigrationsOptions = {
-  dbClient: dbClient,
   dryRun: true,
   dir: resolve("infra", "migrations"),
   direction: "up",
@@ -37,19 +35,34 @@ function onErrorHandler(error, request, response) {
 }
 
 async function getHandler(request, response) {
-  const pendingMigrations = await migrationRunner(defaultMigrationsOptions);
-  return response.status(200).json(pendingMigrations);
+  try {
+    const dbClient = await database.getNewClient();
+    const pendingMigrations = await migrationRunner({
+      ...defaultMigrationsOptions,
+      dbClient,
+    });
+    await dbClient.end();
+    return response.status(200).json(pendingMigrations);
+  } finally {
+    await dbClient.end();
+  }
 }
 
 async function postHandler(request, response) {
-  const migratedMigrations = await migrationRunner({
-    ...defaultMigrationsOptions,
-    dryRun: false,
-  });
+  try {
+    const dbClient = await database.getNewClient();
+    const migratedMigrations = await migrationRunner({
+      ...defaultMigrationsOptions,
+      dbClient,
+      dryRun: false,
+    });
 
-  if (migratedMigrations.length > 0) {
-    return response.status(201).json(migratedMigrations);
+    if (migratedMigrations.length > 0) {
+      return response.status(201).json(migratedMigrations);
+    }
+
+    return response.status(200).json(migratedMigrations);
+  } finally {
+    await dbClient.end();
   }
-
-  return response.status(200).json(migratedMigrations);
 }
