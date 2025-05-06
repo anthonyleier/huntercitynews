@@ -232,15 +232,15 @@ describe("PATCH /api/v1/users/[username]", () => {
     expect(responseBody.updated_at > responseBody.created_at).toBe(true);
 
     const userInDatabase = await user.findOneByUsername("newPassword1");
-      const correctPasswordMatch = await password.compare(
-        "newPassword2",
-        userInDatabase.password,
-      );
-      const incorrectPasswordMatch = await password.compare(
-        "newPassword1",
-        userInDatabase.password,
-      );
-      expect(correctPasswordMatch).toBe(true);
-      expect(incorrectPasswordMatch).toBe(false);
+    const correctPasswordMatch = await password.compare(
+      "newPassword2",
+      userInDatabase.password,
+    );
+    const incorrectPasswordMatch = await password.compare(
+      "newPassword1",
+      userInDatabase.password,
+    );
+    expect(correctPasswordMatch).toBe(true);
+    expect(incorrectPasswordMatch).toBe(false);
   });
 });
