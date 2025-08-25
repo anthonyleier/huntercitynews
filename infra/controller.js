@@ -1,7 +1,6 @@
 import * as cookie from "cookie";
 import session from "models/session.js";
 import {
-  InternalServerError,
   MethodNotAllowedError,
   ValidationError,
   NotFoundError,
