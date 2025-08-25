@@ -1,7 +1,6 @@
 import * as cookie from "cookie";
 import session from "models/session.js";
 import {
-  InternalServerError,
   MethodNotAllowedError,
   ValidationError,
   NotFoundError,
@@ -10,24 +9,18 @@ import {
 
 function onNoMatchHandler(request, response) {
   const publicErrorObject = new MethodNotAllowedError();
-  response.status(publicErrorObject.statusCode).json(publicErrorObject);
+  return response.status(publicErrorObject.statusCode).json(publicErrorObject);
 }
 
 function onErrorHandler(error, request, response) {
-  if (
-    error instanceof ValidationError ||
-    error instanceof NotFoundError ||
-    error instanceof UnauthorizedError
-  ) {
+  if (error instanceof ValidationError || error instanceof NotFoundError) {
     return response.status(error.statusCode).json(error);
   }
 
-  const publicErrorObject = new InternalServerError({
-    cause: error,
-  });
-
-  console.error(publicErrorObject);
-  return response.status(publicErrorObject.statusCode).json(publicErrorObject);
+  if (error instanceof UnauthorizedError) {
+    clearSessionCookie(response);
+    return response.status(error.statusCode).json(error);
+  }
 }
 
 async function setSessionCookie(sessionToken, response) {
