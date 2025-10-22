@@ -1,11 +1,12 @@
-import email from 'infra/email.js'
-import database from 'infra/database.js';
-import webserver from 'infra/webserver.js';
+import email from "infra/email.js";
+import database from "infra/database.js";
+import webserver from "infra/webserver.js";
+import { NotFoundError } from "infra/errors.js";
 
-const EXPIRATION_IN_MILLISECONDS = 60 * 15 * 1000 // 15 minutes
+const EXPIRATION_IN_MILLISECONDS = 60 * 15 * 1000; // 15 minutes
 
 async function create(userId) {
-  const expiresAt = new Date(Date.now() + EXPIRATION_IN_MILLISECONDS)
+  const expiresAt = new Date(Date.now() + EXPIRATION_IN_MILLISECONDS);
 
   const newToken = await runInsertQuery(userId, expiresAt);
   return newToken;
@@ -20,23 +21,30 @@ async function create(userId) {
         RETURNING
           *
         ;`,
-      values: [userId, expiresAt]
-
-    })
+      values: [userId, expiresAt],
+    });
 
     return results.rows[0];
   }
 }
 
-async function findOneByUserId(userId) {
-  const token = await runSelectQuery(userId);
-  return token;
+async function findOneValidById(tokenId) {
+  const activationTokenObject = await runSelectQuery(tokenId);
+  return activationTokenObject;
 
-  async function runSelectQuery(userId) {
+  async function runSelectQuery(tokenId) {
     const results = await database.query({
-      text: 'SELECT * FROM user_activation_tokens WHERE user_id = $1 LIMIT 1;',
-      values: [userId],
+      text: "SELECT * FROM user_activation_tokens WHERE id = $1 AND used_at IS NULL AND expires_at > NOW() LIMIT 1;",
+      values: [tokenId],
     });
+
+    if (results.rowCount === 0) {
+      throw new NotFoundError({
+        message:
+          "O token de ativação utilizado não foi encontrado no sistema ou expirou.",
+        action: "Faça um novo cadastro.",
+      });
+    }
 
     return results.rows[0];
   }
@@ -54,13 +62,13 @@ ${webserver.origin}/cadastro/ativar/${activationToken.id}
 Atenciosamente,
 Equipe HunterCityNews
 `,
-  })
+  });
 }
 
 const activation = {
   create,
   sendEmailToUser,
-  findOneByUserId
-}
+  findOneValidById,
+};
 
-export default activation
+export default activation;
