@@ -1,3 +1,4 @@
+import user from "models/user.js";
 import email from "infra/email.js";
 import database from "infra/database.js";
 import webserver from "infra/webserver.js";
@@ -22,6 +23,32 @@ async function create(userId) {
           *
         ;`,
       values: [userId, expiresAt],
+    });
+
+    return results.rows[0];
+  }
+}
+
+async function markValidTokenAsUsed(tokenId) {
+  const usedTokenObject = await runUpdateQuery(tokenId);
+  return usedTokenObject;
+
+  async function runUpdateQuery(tokenId) {
+    const results = await database.query({
+      text: `
+        UPDATE
+          user_activation_tokens
+        SET
+          used_at = timezone('utc', NOW()),
+          updated_at = timezone('utc', NOW())
+        WHERE
+          id = $1
+          AND used_at IS NULL
+          AND expires_at > NOW()
+        RETURNING
+          *
+        ;`,
+      values: [tokenId],
     });
 
     return results.rows[0];
@@ -65,10 +92,17 @@ Equipe HunterCityNews
   });
 }
 
+async function activateUserByUserId(userId) {
+  const activatedUser = await user.setFeatures(userId, ["create:session"]);
+  return activatedUser;
+}
+
 const activation = {
   create,
   sendEmailToUser,
   findOneValidById,
+  markValidTokenAsUsed,
+  activateUserByUserId,
 };
 
 export default activation;
