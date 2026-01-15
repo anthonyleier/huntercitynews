@@ -4,8 +4,8 @@ exports.up = (pgm) => {
       type: "varchar[]",
       notNull: true,
       default: "{}",
-    }
-  })
+    },
+  });
 };
 
 exports.down = false;

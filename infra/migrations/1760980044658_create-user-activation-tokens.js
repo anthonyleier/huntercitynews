@@ -8,7 +8,7 @@ exports.up = (pgm) => {
 
     used_at: {
       type: "timestamptz",
-      notNull: false
+      notNull: false,
     },
 
     user_id: {
