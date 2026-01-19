@@ -25,7 +25,7 @@ async function patchHandler(request, response) {
 
   if (!authorization.can(userTryingToPatch, "update:user", targetUser)) {
     throw new ForbiddenError({
-      message: "Você não possui permissão para ataulizar outro usuário.",
+      message: "Você não possui permissão para atualizar outro usuário.",
       action:
         "Verifique se você possui a feature necessária para atualizar outro usuário.",
     });
