@@ -26,6 +26,19 @@ function filterOutput(user, feature, resource) {
       updated_at: resource.updated_at,
     };
   }
+
+  if (feature === "read:user:self") {
+    if (user.id === resource.id) {
+      return {
+        id: resource.id,
+        username: resource.username,
+        email: resource.email,
+        features: resource.features,
+        created_at: resource.created_at,
+        updated_at: resource.updated_at,
+      };
+    }
+  }
 }
 
 const authorization = {
