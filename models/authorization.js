@@ -39,6 +39,19 @@ function filterOutput(user, feature, resource) {
       };
     }
   }
+
+  if (feature === "read:session") {
+    if (user.id === resource.user_id) {
+      return {
+        id: resource.id,
+        token: resource.token,
+        user_id: resource.user_id,
+        created_at: resource.created_at,
+        updated_at: resource.updated_at,
+        expires_at: resource.expires_at,
+      };
+    }
+  }
 }
 
 const authorization = {
