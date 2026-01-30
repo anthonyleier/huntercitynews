@@ -63,6 +63,20 @@ function filterOutput(user, feature, resource) {
       used_at: resource.used_at,
     };
   }
+
+  if (feature === "read:migrations") {
+    const secureOutputMigrations = [];
+
+    resource.forEach((migration) => {
+      secureOutputMigrations.push({
+        path: migration.path,
+        name: migration.name,
+        timestamp: migration.timestamp,
+      });
+    });
+
+    return secureOutputMigrations;
+  }
 }
 
 const authorization = {
