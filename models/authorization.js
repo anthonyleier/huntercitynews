@@ -77,6 +77,25 @@ function filterOutput(user, feature, resource) {
 
     return secureOutputMigrations;
   }
+
+  if (feature === "read:status") {
+    const statusInfo = {
+      updated_at: resource.updated_at,
+      dependencies: {
+        database: {
+          max_connections: resource.dependencies.database.max_connections,
+          opened_connections: resource.dependencies.database.opened_connections,
+        },
+      },
+    };
+
+    if (can(user, "read:status:version")) {
+      statusInfo.dependencies.database.version =
+        resource.dependencies.database.version;
+    }
+
+    return statusInfo;
+  }
 }
 
 const authorization = {
