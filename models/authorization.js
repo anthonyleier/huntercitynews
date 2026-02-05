@@ -64,18 +64,14 @@ function filterOutput(user, feature, resource) {
     };
   }
 
-  if (feature === "read:migrations") {
-    const secureOutputMigrations = [];
-
-    resource.forEach((migration) => {
-      secureOutputMigrations.push({
+  if (feature === "read:migration") {
+    return resource.map((migration) => {
+      return {
         path: migration.path,
         name: migration.name,
         timestamp: migration.timestamp,
-      });
+      };
     });
-
-    return secureOutputMigrations;
   }
 
   if (feature === "read:status") {

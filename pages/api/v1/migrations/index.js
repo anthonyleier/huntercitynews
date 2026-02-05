@@ -5,8 +5,8 @@ import authorization from "models/authorization.js";
 
 const router = createRouter();
 router.use(controller.injectAnonymousOrUser);
-router.get(getHandler);
-router.post(postHandler);
+router.get(controller.canRequest("read:migration"), getHandler);
+router.post(controller.canRequest("create:migration"), postHandler);
 export default router.handler(controller.errorHandlers);
 
 async function getHandler(request, response) {
@@ -15,7 +15,7 @@ async function getHandler(request, response) {
 
   const secureOutputValues = authorization.filterOutput(
     userTryingToPost,
-    "read:migrations",
+    "read:migration",
     pendingMigrations,
   );
 
@@ -28,7 +28,7 @@ async function postHandler(request, response) {
 
   const secureOutputValues = authorization.filterOutput(
     userTryingToPost,
-    "read:migrations",
+    "read:migration",
     migratedMigrations,
   );
 
