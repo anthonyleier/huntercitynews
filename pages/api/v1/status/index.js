@@ -25,7 +25,7 @@ async function getHandler(request, response) {
   });
   const openedConnections = openedConnectionsResult.rows[0].opened_connections;
 
-  const status = {
+  const statusObject = {
     updated_at: updatedAt,
     dependencies: {
       database: {
@@ -39,7 +39,7 @@ async function getHandler(request, response) {
   const secureOutputValues = authorization.filterOutput(
     userTryingToGet,
     "read:status",
-    status,
+    statusObject,
   );
 
   response.status(200).json(secureOutputValues);

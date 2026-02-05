@@ -75,7 +75,7 @@ function filterOutput(user, feature, resource) {
   }
 
   if (feature === "read:status") {
-    const statusInfo = {
+    const output = {
       updated_at: resource.updated_at,
       dependencies: {
         database: {
@@ -85,12 +85,12 @@ function filterOutput(user, feature, resource) {
       },
     };
 
-    if (can(user, "read:status:version")) {
-      statusInfo.dependencies.database.version =
+    if (can(user, "read:status:all")) {
+      output.dependencies.database.version =
         resource.dependencies.database.version;
     }
 
-    return statusInfo;
+    return output;
   }
 }
 

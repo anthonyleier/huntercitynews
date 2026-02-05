@@ -14,9 +14,9 @@ describe("GET /api/v1/status", () => {
       const parsedUpdatedAt = new Date(responseBody.updated_at).toISOString();
       expect(responseBody.updated_at).toEqual(parsedUpdatedAt);
 
-      expect(responseBody.dependencies.database.version).toBe(undefined);
       expect(responseBody.dependencies.database.max_connections).toBe(100);
       expect(responseBody.dependencies.database.opened_connections).toBe(1);
+      expect(responseBody.dependencies.database).not.toHaveProperty("version");
     });
   });
 
@@ -38,9 +38,9 @@ describe("GET /api/v1/status", () => {
       const parsedUpdatedAt = new Date(responseBody.updated_at).toISOString();
       expect(responseBody.updated_at).toEqual(parsedUpdatedAt);
 
-      expect(responseBody.dependencies.database.version).toBe(undefined);
       expect(responseBody.dependencies.database.max_connections).toBe(100);
       expect(responseBody.dependencies.database.opened_connections).toBe(1);
+      expect(responseBody.dependencies.database).not.toHaveProperty("version");
     });
   });
 
@@ -49,9 +49,7 @@ describe("GET /api/v1/status", () => {
       const privilegedUser = await orchestrator.createUser();
       const activatedPrivilegedUser =
         await orchestrator.activateUser(privilegedUser);
-      await orchestrator.addFeaturesToUser(privilegedUser, [
-        "read:status:version",
-      ]);
+      await orchestrator.addFeaturesToUser(privilegedUser, ["read:status:all"]);
 
       const privilegedUserSession = await orchestrator.createSession(
         activatedPrivilegedUser.id,
