@@ -80,7 +80,7 @@ async function findOneValidById(tokenId) {
 
 async function sendEmailToUser(user, activationToken) {
   await email.send({
-    from: "HunterCityNews <contato@huntercitynews.com.br>",
+    from: "HunterCityNews <contato@anthonycruz.com.br>",
     to: user.email,
     subject: "Ative seu cadastro no HunterCityNews!",
     text: `${user.username}, clique no link abaixo para ativar seu cadastro no HunterCityNews:
