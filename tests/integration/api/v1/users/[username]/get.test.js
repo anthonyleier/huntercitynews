@@ -10,9 +10,7 @@ beforeAll(async () => {
 describe("GET /api/v1/users/[username]", () => {
   describe("Anonymous user", () => {
     test("With exact case match", async () => {
-      const createdUser = await orchestrator.createUser({
-        username: "MesmoCase",
-      });
+      await orchestrator.createUser({ username: "MesmoCase" });
 
       const response = await fetch(
         "http://localhost:3000/api/v1/users/MesmoCase",
@@ -23,8 +21,7 @@ describe("GET /api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         id: responseBody.id,
         username: "MesmoCase",
-        email: createdUser.email,
-        password: responseBody.password,
+        features: ["read:activation_token"],
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
@@ -35,9 +32,7 @@ describe("GET /api/v1/users/[username]", () => {
     });
 
     test("With case mismatch", async () => {
-      const createdUser = await orchestrator.createUser({
-        username: "DiferenteCase",
-      });
+      await orchestrator.createUser({ username: "DiferenteCase" });
 
       const response = await fetch(
         "http://localhost:3000/api/v1/users/diferentecase",
@@ -48,8 +43,7 @@ describe("GET /api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         id: responseBody.id,
         username: "DiferenteCase",
-        email: createdUser.email,
-        password: responseBody.password,
+        features: ["read:activation_token"],
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
