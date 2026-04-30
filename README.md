@@ -4,13 +4,13 @@ O propósito deste repositório é através do curso.dev realizar o desenvolvime
 
 ![curso.dev](https://i.imgur.com/QLiUkTi.png)
 
-# Tabnews
+## Tabnews
 
 O [Tabnews](https://tabnews.com.br) é um site desenvolvido pelo Filipe Deschamps com o intuito de construir um lugar mais massa na internet. Dito isto, o [Tabnews](https://tabnews.com.br) permite que os usuários criem posts e interajam com outros usuários de uma forma completamente direta e livre. Através das TabCoins, os usuários podem ganhar moedas ao criar conteúdo para a plataforma e gastar estas moedas para dar mais relevância à posts de boa qualidade.
 
 ![tabnews.com.br](https://i.imgur.com/8TOMQZH.png)
 
-# Instalação
+## Instalação
 
 Segue os comandos necessários para a instalação do projeto. O comando "npm install" é usado em projetos Node.js para instalar as dependências necessárias. Quando executado na linha de comando, o NPM (Node Package Manager) analisa o arquivo "package.json" do projeto em busca de todas as dependências necessárias e, em seguida, baixa e instala essas dependências. As dependências são armazenadas no diretório "node_modules" e suas versões são registradas no arquivo "package-lock.json". Isso garante que todas as pessoas que executam "npm install" em um projeto obtenham as mesmas versões de dependências instaladas em suas máquinas. É importante executar "npm install" regularmente, especialmente quando um novo membro da equipe começa a trabalhar em um projeto ou quando há alterações significativas nas dependências.
 
