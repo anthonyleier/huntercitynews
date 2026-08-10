@@ -27,8 +27,14 @@ export default function RegisterPage() {
   }
 
   return (
-    <DefaultLayout>
+    <DefaultLayout
+      metadata={{
+        title: "Cadastro",
+        description: "Crie sua conta de forma gratuita.",
+      }}
+    >
       <h1>Cadastro</h1>
+
       <form onSubmit={handleSubmit}>
         <div>
           Nome de usuário:{" "}

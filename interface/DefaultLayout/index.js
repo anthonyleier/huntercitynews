@@ -1,8 +1,21 @@
+import Head from "next/head";
 import { PageLayout, Header, Text } from "@primer/react";
 
-export default function DefaultLayout({ children }) {
+export default function DefaultLayout({ children, metadata = {} }) {
   return (
     <>
+      <Head>
+        <title>
+          {metadata.title
+            ? `${metadata.title} · HunterCityNews`
+            : "HunterCityNews"}
+        </title>
+
+        {metadata.description && (
+          <meta name="description" content={metadata.description} />
+        )}
+      </Head>
+
       <Header>
         <Header.Item full>
           <Header.Link href="/">HunterCityNews</Header.Link>

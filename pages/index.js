@@ -1,5 +1,18 @@
+import DefaultLayout from "interface/DefaultLayout";
+
 function Home() {
-  return <h1>Hello World</h1>;
+  return (
+    <>
+      <DefaultLayout
+        metadata={{
+          description:
+            "Notícias sobre a melhor cidade do meio-oeste catarinense",
+        }}
+      >
+        <h1>Notícias sobre a melhor cidade do meio-oeste catarinense</h1>
+      </DefaultLayout>
+    </>
+  );
 }
 
 export default Home;
