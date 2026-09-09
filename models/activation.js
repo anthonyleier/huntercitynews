@@ -62,7 +62,7 @@ async function findOneValidById(tokenId) {
 
   async function runSelectQuery(tokenId) {
     const results = await database.query({
-      text: "SELECT * FROM user_activation_tokens WHERE id = $1 AND used_at IS NULL AND expires_at > NOW() LIMIT 1;",
+      text: "SELECT * FROM user_activation_tokens WHERE id = $1 AND expires_at > NOW() LIMIT 1;",
       values: [tokenId],
     });
 
