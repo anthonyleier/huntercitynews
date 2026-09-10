@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 
 export default function ActivateUserPage() {
   const router = useRouter();
-
   const activationTokenId = router.query.activationTokenId;
+
+  const [activationStatus, setActivationStatus] = useState("loading");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (!activationTokenId) return;
@@ -25,27 +27,47 @@ export default function ActivateUserPage() {
         const activationResponseBody = await response.json();
 
         if (response.status === 200) {
-          console.log("Sucesso:", activationResponseBody);
-          // sucesso na interface
+          setActivationStatus("success");
           return;
         }
 
-        // sinal de fracasso na interface
-        console.log("Fracasso:", activationResponseBody);
+        setErrorMessage(
+          `${activationResponseBody.message} ${activationResponseBody.action}`,
+        );
+        setActivationStatus("failure");
       } catch {
-        // sinal de fracasso absoluto na interface
-        console.log("Fracasso2");
+        setErrorMessage(
+          "Houve uma falha de conexão com o servidor. Tente novamente mais tarde.",
+        );
+        setActivationStatus("failure");
       }
     }
   }, [activationTokenId]);
 
   return (
     <DefaultLayout contentWidth="small" metadata={{ title: "Ativar cadastro" }}>
-      <Banner
-        variant="warning"
-        title="Aguarde"
-        description="Abra o email enviado pelo HunterCityNews e clique no link de confirmação"
-      />
+      {activationStatus === "loading" && (
+        <Banner variant="info">
+          <Banner.Title>Verificando token...</Banner.Title>
+        </Banner>
+      )}
+
+      {activationStatus === "success" && (
+        <Banner variant="success">
+          <Banner.Title>Cadastro ativado com sucesso!</Banner.Title>
+          <Banner.Description>
+            Sua conta está ativa e você já pode{" "}
+            <a href="/login">fazer o login</a>
+          </Banner.Description>
+        </Banner>
+      )}
+
+      {activationStatus === "failure" && (
+        <Banner variant="critical">
+          <Banner.Title>Não foi possível ativar seu cadastro.</Banner.Title>
+          <Banner.Description>{errorMessage}</Banner.Description>
+        </Banner>
+      )}
     </DefaultLayout>
   );
 }
